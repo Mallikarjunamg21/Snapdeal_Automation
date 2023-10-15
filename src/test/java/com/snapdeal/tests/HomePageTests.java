@@ -2,9 +2,8 @@ package com.snapdeal.tests;
 
 import com.snapdeal.page.HomePage;
 import com.snapdeal.utils.Xls_Reader;
-import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -27,6 +26,9 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static org.openqa.selenium.OutputType.*;
+import static org.openqa.selenium.devtools.v85.page.Page.CaptureScreenshotFormat.PNG;
 
 public class HomePageTests extends TestBase
 {
@@ -154,7 +156,10 @@ public class HomePageTests extends TestBase
 
 	}
 	@AfterMethod
-		public void tearDown() {
+		public void tearDown() throws IOException {
+		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+		String currentDir = System.getProperty("user.dir");
+		FileUtils.copyFile(scrFile, new File(currentDir + "/Screenshots/" + System.currentTimeMillis() + ".png"));
 			driver.close();
 		}
 
